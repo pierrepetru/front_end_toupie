@@ -1,9 +1,150 @@
-<!DOCTYPE html>
+<div ng-controller="FormulaireCtrl">
 
-<form name="myForm">
-  <label for="repeatSelect"> Repeat select: </label>
-  <select name="repeatSelect" id="repeatSelect" ng-model="data.repeatSelect">
-    <option ng-repeat="option in data.availableOptions" value="{{option.id}}">{{option.name}}</option>
-  </select>
-</form>
+  <form name="myForm">
+    <label for="baseDeDonnee"> Choisir sa base de donnee </label>
+    <select name="baseDeDonnee" id="baseDeDonnee" ng-model="nomBaseDeDonnee" ng-change="selectDB()">
+      <!-- ng-click="selectDB()"> -->
+      <option ng-repeat="db in resultatDb" value="{{db}}">{{db}}</option>
+      {{resultatTable}}
+    </select>
 
+    <p ng-show="!nomBaseDeDonnee"><br/> Selectionner une base de donnee. Si aucune veuillez en créer une :-) </p>
+
+
+    <div ng-show="nomBaseDeDonnee"><br/> Nom de la base de donnée : {{nomBaseDeDonnee}}</div>
+
+    <div ng-show="resultatTable">
+      Les tables :
+      <select name="tableDeDonnee" id="tableDeDonnee" ng-model="tableBaseDeDonnee" ng-change="selectTable()">
+        <option ng-repeat="db in resultatTable" value="{{db}}">{{db}}</option>
+
+      </select>
+
+      <br/>
+      <br/>
+
+      <table width="100%">
+        <thead>
+        <tr ng-repeat="item in resultatTableType | limitTo:1">
+          <th ng-repeat="(key, val) in item">
+            {{key}}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in resultatTableType">
+          <td ng-repeat="(key, val) in item ">
+            <label> <input ng-if="key=='name'" type="checkbox" ng-model="vraioufaux" value="{{val}}"
+                           ng-checked="exists(tableBaseDeDonnee, val, listeElem)"
+                           ng-click="toggle(tableBaseDeDonnee, val,listeElem)">
+              {{val}}
+            </label>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <br/>
+    <div ng-if="listeElem.length != 0 ">
+      Données selectionnées : <br/>
+      <span ng-repeat="item in listeElem"> {{item}} </span>
+    </div>
+
+    <div>
+      Affichage donnée :
+      <div ng-repeat="data in listeElem"> {{}}
+
+
+      </div>
+    </div>
+    <br/>
+  </form>
+  <label>
+    <input type="checkbox" ng-model="showOrNoShow" value="donnee" ng-change="selectDonnee()">
+    Montrer les données
+  </label>
+  Resultat Table Donne : <br/> {{resultatTableDonnee}}
+
+  <div ng-show="showOrNoShow"> {{donneeAafficher}} existence dans la liste listeelem
+
+  </div>
+  laa : <br/>
+  {{reponseTre}}
+  {{indexx}}
+  <br/>
+  <input type="checkbox" ng-model="result" value="graphe" ng-change="histogramme()">
+  {{result}}
+
+  {{resultatTableDonnee}}
+
+  {{errorTable}}
+
+  <p> Ici : </p>
+
+  <div ng-repeat="(key, value) in listeElem"
+       class="btn btn-primary"
+       data-drag="true"
+       data-jqyoui-options="{revert: 'invalid'}"
+       ng-model="value"
+       jqyoui-draggable="{animate:true}"
+
+       ng-hide="!value">
+    {{value}}
+  </div>
+
+  <br/>
+  <br/>
+
+  <div  class="thumbnail"
+                data-drop="true"
+                data-jqyoui-options
+                ng-model="list2"
+                jqyoui-droppable="{onDrop: testi()}"
+              style='height:100px;'
+
+
+        >
+
+  <div class="btn btn-success"
+       data-drag="false"
+       data-jqyoui-options
+       ng-model="list2"
+       jqyoui-draggable
+       ng-hide="!list2.champs"
+       >
+
+    {{list2.champs}}
+  </div>
+
+</div>
+
+  <div  class="thumbnail"
+        data-drop="true"
+        data-jqyoui-options
+        ng-model="valeur"
+        jqyoui-droppable
+        style='height:100px;'
+      >
+
+    <div class="btn btn-success"
+         data-drag="false"
+         data-jqyoui-options
+         ng-model="valeur"
+         jqyoui-draggable
+         ng-hide="!valeur">
+      {{valeur.champs}}
+    </div>
+
+  </div>
+
+  List1 model : {{listeElem}}
+  <br/>
+  List2 model : {{list2}}
+
+  <br/>
+  <br/>
+  <br/>
+Scope result : {{resultatTableDonnee}}
+
+  {{listeElem}}
+</div>
